@@ -7,11 +7,11 @@ public class DBConnection {
 	
 		private Connection Conn ; 
 		// Initialize connection 
-		public DBConnection(String theUrl) {
+		public DBConnection(String[] theUrl) {
 			// try connect 
 		      try {
 		         Class.forName("com.mysql.jdbc.Driver");
-		         Conn = DriverManager.getConnection(theUrl);
+		         Conn = DriverManager.getConnection(theUrl[0], theUrl[1], theUrl[2]);
 		         System.out.println("connected");	       
 		      } catch (Exception e) {
 		         System.out.println(e);
