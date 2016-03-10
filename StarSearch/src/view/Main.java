@@ -2,7 +2,7 @@ package view;
 
 import java.awt.EventQueue;
 
-//import model.DBAccess;
+import model.DBAccess;
 
 public class Main {
 	
@@ -17,7 +17,7 @@ public class Main {
      * @param theArgs : The command line arguments.
      */
     public static void main(final String[] theArgs) {
-	//DBAccess.query("SELECT *");
+	System.out.println(DBAccess.query("SELECT starName from Star"));
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
