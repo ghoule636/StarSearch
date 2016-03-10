@@ -33,6 +33,18 @@ public class Star {
 		name = theName;
 		constellationID = theConstID;
 	}
+	
+	public Star() {
+		starID = 0;
+		temperature = 0;
+		description = "";
+		distance = 0;
+		diameter = 0;
+		mass = 0;
+		type = "";
+		name = "";
+		constellationID = 0;
+	}
 
 	public int getTemperature() {
 		return temperature;
