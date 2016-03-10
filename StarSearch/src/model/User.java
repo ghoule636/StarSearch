@@ -39,6 +39,14 @@ public class User {
 		email = "";
 		
 	}
+	
+	public boolean isUser(String username, String password) {
+		boolean result = false;
+		if (this.user.equals(username) && this.password.equals(password)) {
+			result = true;
+		}
+		return result;
+	}
 
 	public int getUserID() {
 		return userID;
