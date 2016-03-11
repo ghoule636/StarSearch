@@ -1,35 +1,48 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.net.URL;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import model.User;
 
 public class HomePage {
 	private JFrame myFrame;
 	private JPanel mySearchPanel;
 	private JPanel myLogInPanel;
+	private JLabel invalid;
 	private JTextField myUserName;
 	private JTextField myPassword;
 	private String myUserString;
 	private String myPassString;
+	private ArrayList<User> myUsers = new ArrayList<User>();
 	
 	public HomePage() {
 		myFrame = new JFrame("Star Search Database");
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		myFrame.setMinimumSize(new Dimension(500, 500));
 		myFrame.setResizable(false);
+		User aUser = new User();
+		aUser.setUser("bob1");
+		aUser.setPassword("1234");
+		myUsers.add(aUser);
 		//setImages();
 		logInPanel();
 		searchPanel();
@@ -65,7 +78,7 @@ public class HomePage {
 	private void logInPanel() {
 		myLogInPanel = new JPanel();
 		myLogInPanel.setLayout(new FlowLayout(FlowLayout.TRAILING));
-		myUserName = new JTextField(8);
+		myUserName = new JTextField(6);
 		myUserName.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(final KeyEvent theEvent) {
@@ -75,7 +88,7 @@ public class HomePage {
 			}
 		});
 		myUserName.addActionListener(new LogOnListener());
-		myPassword = new JTextField(8);
+		myPassword = new JTextField(6);
 		myPassword.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(final KeyEvent theEvent) {
@@ -90,6 +103,9 @@ public class HomePage {
 		myLogInPanel.add(myUserName);
 		myLogInPanel.add(myPassword);
 		myLogInPanel.add(enter);
+		invalid = new JLabel("");
+		invalid.setForeground(Color.RED);
+		myLogInPanel.add(invalid);
 		myFrame.add(myLogInPanel, BorderLayout.NORTH);
 	}
 
@@ -116,25 +132,14 @@ public class HomePage {
 	private boolean verifyUser() {
 		boolean result = false;//set this to false in order to actually verify.
 		
-		for (int i = 0; i < listOfJudges.size(); i++) {
-			if (listOfJudges.get(i).logOn(userString, passString)) {
-				result = true;
-				myJudge = listOfJudges.get(i);
-			} else {
-				result &= true;
-			}
+		if (myUsers.get(0).isUser(myUserString, myPassString)) {
+			result = true;
 		}
 		return result;
 	}
 	
-	private List<Judge> loadJudges() {
-		ArrayList<Judge> result = new ArrayList<>();
-		
-		Judge bob = new Judge("bob1", "1234");
-		
-		result.add(bob);
-		
-		return result;
+	private void logon() {
+		JOptionPane.showMessageDialog(myLogInPanel, "YOU SIGNED IN!");
 	}
 
 }
