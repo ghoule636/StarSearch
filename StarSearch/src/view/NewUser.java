@@ -197,7 +197,7 @@ public class NewUser extends JDialog {
 				if (verifyBlanks()) {
 					if (verifyNewUser(newUser)) {
 						System.out.println("added User");
-						//DBAccess.registerUser(newUser);
+						DBAccess.registerUser(newUser);
 					} else {
 						errorMessage.setText("UserName or email already exists in System!");
 						errorMessage.setVisible(true);

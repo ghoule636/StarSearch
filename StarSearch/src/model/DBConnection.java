@@ -59,7 +59,7 @@ public class DBConnection {
 			Statement stm;
 			try {
 				stm = Conn.createStatement();
-				stm.executeQuery(query);
+				stm.execute(query);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
