@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
 import model.DBAccess;
 import model.User;
@@ -25,10 +26,13 @@ import model.User;
 public class HomePage {
 	private JFrame myFrame;
 	private JButton myHome;
+	private JButton myLogOutButton;
 	private JPanel mySearchPanel;
 	private JPanel myLogInPanel;
+	private JPanel myLogOutPanel;
+	private JPanel myUserPanel;
+	private JPanel myHomePanel;
 	private ResultsPanel myCenter;
-	private JPanel myTop;
 	private JLabel invalid;
 	private JTextField mySearchBox;
 	private String mySearchedStar;
@@ -38,6 +42,7 @@ public class HomePage {
 	private String myPassString;
 	private User[] myUsers;
 	private User myUser;
+	private boolean myLogOn = false;
 	
 	public HomePage() {
 		myFrame = new JFrame("Star Search Database");
@@ -55,9 +60,16 @@ public class HomePage {
 	private void setUpHome() {
 		myHome = createButton("Return to Star Search Home");
 		myHome.setEnabled(false);
-		JPanel homePanel = new JPanel();
-		homePanel.add(myHome);
-		myFrame.add(homePanel, BorderLayout.SOUTH);
+		myHomePanel = new JPanel();
+		myHomePanel.add(myHome);
+		myFrame.add(myHomePanel, BorderLayout.SOUTH);
+	}
+	
+	private void setUpLogOut() {
+		myLogOutButton = createButton("Log Out");
+		myLogOutPanel = new JPanel();
+		myLogOutPanel.add(myLogOutButton);
+		myFrame.add(myLogOutPanel, BorderLayout.SOUTH);
 	}
 	
 	private void setImages() {
@@ -140,6 +152,9 @@ public class HomePage {
 					break;
 				case "Return to Star Search Home": 
 					createBackToHome();
+					break;
+				case "Log Out": 
+					createBackToHome();
 			}
 		}
 	}
@@ -154,7 +169,21 @@ public class HomePage {
 			myFrame.getContentPane().add(myCenter, BorderLayout.CENTER);
 			myFrame.getContentPane().add(mySearchPanel, BorderLayout.NORTH);
 			myFrame.revalidate();
-		} else {
+		} 
+//		else if (myLogOn) {
+//			setUpLogOut();
+//			myFrame.getContentPane().remove(mySearchPanel);
+//			myFrame.getContentPane().remove(myLogInPanel);
+//			myFrame.getContentPane().remove(myUserPanel);
+//			myFrame.getContentPane().remove(myHomePanel);
+//			myCenter = null;
+//			myCenter = new ResultsPanel(mySearchedStar);
+//			myFrame.getContentPane().add(myCenter, BorderLayout.CENTER);
+//			myFrame.getContentPane().add(mySearchPanel, BorderLayout.NORTH);
+//			myFrame.getContentPane().add(myLogOutPanel, BorderLayout.SOUTH);
+//			myFrame.revalidate();
+//		} 
+		else {
 			myFrame.getContentPane().remove(myCenter);
 			myCenter = null;
 			myCenter = new ResultsPanel(mySearchedStar);
@@ -178,7 +207,8 @@ public class HomePage {
 	private class LogOnListener implements ActionListener {
 		public void actionPerformed(ActionEvent theEvent) {
 			if(verifyUser()) {
-				logon();
+				//logon();
+				myLogOn = true;
 			} else {
 				invalid.setText("Invalid Login Information!");
 			}
@@ -197,8 +227,15 @@ public class HomePage {
 		return result;
 	}
 	
-	private void logon() {
-		JOptionPane.showMessageDialog(myLogInPanel, myUser.getfName() + " " + myUser.getlName() + " " + myUser.getEmail());
-	}
+//	private void logon() {
+//		myUserPanel = new JPanel();
+//		JTextPane theUser = new JTextPane();
+//		theUser.setEditable(false);
+//		theUser.setText("Welcome " + myUser.getfName());
+//		myUserPanel.add(theUser);
+//		myFrame.getContentPane().remove(myLogInPanel);
+//		myFrame.getContentPane().add(myUserPanel, BorderLayout.NORTH);
+//		myFrame.revalidate();
+//	}
 
 }
