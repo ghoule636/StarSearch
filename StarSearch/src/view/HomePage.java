@@ -24,9 +24,11 @@ import model.User;
 
 public class HomePage {
 	private JFrame myFrame;
+	private JButton myHome;
 	private JPanel mySearchPanel;
 	private JPanel myLogInPanel;
 	private ResultsPanel myCenter;
+	private JPanel myTop;
 	private JLabel invalid;
 	private JTextField mySearchBox;
 	private String mySearchedStar;
@@ -46,10 +48,19 @@ public class HomePage {
 		aUser.setPassword("1234");
 		myUsers.add(aUser);
 		//setImages();
+		setUpHome();
 		logInPanel();
 		searchPanel();
 		myFrame.setLocationRelativeTo(null);
 		myFrame.setVisible(true);
+	}
+	
+	private void setUpHome() {
+		myHome = createButton("Return to Star Search Home");
+		myHome.setEnabled(false);
+		JPanel homePanel = new JPanel();
+		homePanel.add(myHome);
+		myFrame.add(homePanel, BorderLayout.SOUTH);
 	}
 	
 	private void setImages() {
@@ -69,9 +80,9 @@ public class HomePage {
 		mySearchBox = new JTextField(15);
 		mySearchBox.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(final KeyEvent theEvent) {
+			public void keyReleased(final KeyEvent theEvent) {
 				if (theEvent.getKeyCode() != KeyEvent.VK_ENTER) {
-					mySearchedStar = mySearchBox.getText() + theEvent.getKeyChar();
+					mySearchedStar = mySearchBox.getText();
 				}
 			}
 		});
@@ -96,9 +107,9 @@ public class HomePage {
 		myUserName = new JTextField(6);
 		myUserName.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(final KeyEvent theEvent) {
+			public void keyReleased(final KeyEvent theEvent) {
 				if (theEvent.getKeyCode() != KeyEvent.VK_ENTER) {
-					myUserString = myUserName.getText() + theEvent.getKeyChar();
+					myUserString = myUserName.getText();
 				}
 			}
 		});
@@ -106,9 +117,9 @@ public class HomePage {
 		myPassword = new JTextField(6);
 		myPassword.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(final KeyEvent theEvent) {
+			public void keyReleased(final KeyEvent theEvent) {
 				if (theEvent.getKeyCode() != KeyEvent.VK_ENTER) {
-					myPassString = myPassword.getText() + theEvent.getKeyChar();
+					myPassString = myPassword.getText();
 				}
 			}
 		});
@@ -128,15 +139,43 @@ public class HomePage {
 		public void actionPerformed(ActionEvent theEvent) {
 			switch (theEvent.getActionCommand()) {
 				case "Search":
-					System.out.println("Search Pressed");
-					myFrame.getContentPane().remove(mySearchPanel);
-					myCenter = null;
-					myCenter = new ResultsPanel(mySearchedStar);
-					myFrame.getContentPane().add(myCenter, BorderLayout.CENTER);
-					myFrame.revalidate();
+					createResultsView();
 					break;
+				case "Return to Star Search Home": 
+					createBackToHome();
 			}
 		}
+	}
+	
+	private void createResultsView() {
+		if (!myHome.isEnabled()) {
+			myHome.setEnabled(true);
+			myFrame.getContentPane().remove(mySearchPanel);
+			myFrame.getContentPane().remove(myLogInPanel);
+			myCenter = null;
+			myCenter = new ResultsPanel(mySearchedStar);
+			myFrame.getContentPane().add(myCenter, BorderLayout.CENTER);
+			myFrame.getContentPane().add(mySearchPanel, BorderLayout.NORTH);
+			myFrame.revalidate();
+		} else {
+			myFrame.getContentPane().remove(myCenter);
+			myCenter = null;
+			myCenter = new ResultsPanel(mySearchedStar);
+			myFrame.getContentPane().add(myCenter, BorderLayout.CENTER);
+			myFrame.revalidate();
+		}
+
+	}
+	
+	private void createBackToHome() {
+		myHome.setEnabled(false);
+		myFrame.getContentPane().remove(myCenter);
+		myFrame.getContentPane().remove(mySearchPanel);
+		myCenter = null;
+		mySearchPanel = null;
+		logInPanel();
+		searchPanel();
+		myFrame.revalidate();
 	}
 	
 	private class LogOnListener implements ActionListener {
