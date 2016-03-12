@@ -121,6 +121,7 @@ public class DBConnection {
 				u.setUserID(rset.getInt("userID"));
 				u.setfName(rset.getString("fname"));
 				u.setlName(rset.getString("lname"));
+				u.setEmail(rset.getString("email"));
 				u.setPassword(rset.getString("password"));
 				u.setUser(rset.getString("userName"));
 				u.setMod(rset.getBoolean("moderator"));

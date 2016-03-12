@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.net.URL;
-import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.DBAccess;
 import model.User;
 
 public class HomePage {
@@ -36,17 +36,14 @@ public class HomePage {
 	private JTextField myPassword;
 	private String myUserString;
 	private String myPassString;
-	private ArrayList<User> myUsers = new ArrayList<User>();
+	private User[] myUsers;
+	private User myUser;
 	
 	public HomePage() {
 		myFrame = new JFrame("Star Search Database");
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		myFrame.setMinimumSize(new Dimension(500, 500));
 		myFrame.setResizable(false);
-		User aUser = new User();
-		aUser.setUser("bob1");
-		aUser.setPassword("1234");
-		myUsers.add(aUser);
 		//setImages();
 		setUpHome();
 		logInPanel();
@@ -190,15 +187,18 @@ public class HomePage {
 	
 	private boolean verifyUser() {
 		boolean result = false;//set this to false in order to actually verify.
-		
-		if (myUsers.get(0).isUser(myUserString, myPassString)) {
-			result = true;
-		}
+		myUsers = DBAccess.getUsers();
+		for (int i = 0; i < myUsers.length && result == false; i++) {
+			if (myUsers[i].isUser(myUserString, myPassString)) {
+				result = true;
+				myUser = myUsers[0];
+			} 
+		} 
 		return result;
 	}
 	
 	private void logon() {
-		JOptionPane.showMessageDialog(myLogInPanel, "YOU SIGNED IN!");
+		JOptionPane.showMessageDialog(myLogInPanel, myUser.getfName() + " " + myUser.getlName() + " " + myUser.getEmail());
 	}
 
 }
