@@ -26,8 +26,10 @@ public class HomePage {
 	private JFrame myFrame;
 	private JPanel mySearchPanel;
 	private JPanel myLogInPanel;
+	private ResultsPanel myCenter;
 	private JLabel invalid;
 	private JTextField mySearchBox;
+	private String mySearchedStar;
 	private JTextField myUserName;
 	private JTextField myPassword;
 	private String myUserString;
@@ -65,7 +67,16 @@ public class HomePage {
 		mySearchPanel = new JPanel();
 		mySearchPanel.setLayout(new GridBagLayout());
 		mySearchBox = new JTextField(15);
+		mySearchBox.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(final KeyEvent theEvent) {
+				if (theEvent.getKeyCode() != KeyEvent.VK_ENTER) {
+					mySearchedStar = mySearchBox.getText() + theEvent.getKeyChar();
+				}
+			}
+		});
 		JButton search = createButton("Search");
+		//////////mySearchBox.addActionListener(new HomeListener());
 		mySearchPanel.add(mySearchBox);
 		mySearchPanel.add(search);
 		JButton advancedSearch = new JButton("Advanced Search");
@@ -118,6 +129,11 @@ public class HomePage {
 			switch (theEvent.getActionCommand()) {
 				case "Search":
 					System.out.println("Search Pressed");
+					myFrame.getContentPane().remove(mySearchPanel);
+					myCenter = null;
+					myCenter = new ResultsPanel(mySearchedStar);
+					myFrame.getContentPane().add(myCenter, BorderLayout.CENTER);
+					myFrame.revalidate();
 					break;
 			}
 		}
