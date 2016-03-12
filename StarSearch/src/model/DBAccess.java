@@ -22,7 +22,7 @@ public class DBAccess {
 	 * 
 	 * @param searchStr Name of star being searched for.
 	 * @return List of all stars with given name.
-	 * @throws SQLException Bad Database connection.
+	 * @throws SQLException
 	 */
 	public static Star[] searchStar(String searchStr) {
 		
@@ -49,12 +49,20 @@ public class DBAccess {
 	}
 	
 	/**
-	 * This function will perform an update query on the database and add
-	 * the new user to the database.
+	 * This function will perform an insert query on the database and add
+	 * the new user to the database. This functions assumes that the given user
+	 * is unique.
 	 * 
 	 * @param newUser User being added to the database.
 	 */
 	public static void registerUser(User newUser) {
-		
+		String query = "INSERT INTO User ('fname', " +
+						"'lname', 'password', 'moderator'," +
+						"'email', 'userName') VALUES ('" + newUser.getfName() +
+						"', '" + newUser.getlName() + "', '" + newUser.getPassword() +
+						"', " + newUser.isMod() + ", '" + newUser.getEmail() +
+						"', '" + newUser.getUser() + "');";
+
+		db.performQuery(query);
 	}
 }

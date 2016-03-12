@@ -3,7 +3,6 @@ package model;
 import java.sql.*;
 import java.util.Vector;
 
-
 public class DBConnection {
 	
 		private Connection Conn ; 
@@ -41,7 +40,7 @@ public class DBConnection {
 		 * 
 		 * @param query Update query as a string in SQL.
 		 */
-		public void updateQuery(String query){
+		public void updateQuery(String query) {
 			Statement stm;
 			try {
 				stm = Conn.createStatement();
@@ -52,13 +51,28 @@ public class DBConnection {
 		}
 		
 		/**
+		 * Function runs a given query.
+		 * 
+		 * @param query SQL query as a string.
+		 */
+		public void performQuery(String query) {
+			Statement stm;
+			try {
+				stm = Conn.createStatement();
+				stm.executeQuery(query);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		/**
 		 * Searches the database for a star of the given search name.
 		 * 
 		 * @param searchStr Name of star being searched for.
 		 * @return List of all stars with given name.
-		 * @throws SQLException Bad Database connection.
+		 * @throws SQLException
 		 */
-		public Star[] searchStars(String searchStr) throws SQLException{
+		public Star[] searchStars(String searchStr) throws SQLException {
 			Star starArr[];
 			Vector<Star> vStar = new Vector<Star>();
 
@@ -69,7 +83,7 @@ public class DBConnection {
 						  " FROM Star " +
 						  "WHERE starName = '"+ searchStr +"';";
 			rset = statement.executeQuery(queryString);
-			while(rset.next()){
+			while(rset.next()) {
 				Star s = new Star();
 				s.setStarID(rset.getInt("starID"));
 				s.setName(rset.getString("starName"));
@@ -85,7 +99,6 @@ public class DBConnection {
 			vStar.toArray(starArr);
 			return  starArr;
 		}
-		
 
 		/**
 		 * This function will return all users in the Users table of the database.
@@ -93,7 +106,7 @@ public class DBConnection {
 		 * @return Array of all users.
 		 * @throws SQLException
 		 */
-		public User[] getUsers() throws SQLException{
+		public User[] getUsers() throws SQLException {
 			User userArr[];
 			Vector<User> vUser = new Vector<User>();
 
@@ -103,7 +116,7 @@ public class DBConnection {
 			queryString = "SELECT *" +
 						  " FROM Users;"; 
 			rset = statement.executeQuery(queryString);
-			while(rset.next()){
+			while(rset.next()) {
 				User u = new User();
 				u.setUserID(rset.getInt("userID"));
 				u.setfName(rset.getString("fname"));
