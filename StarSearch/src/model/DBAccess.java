@@ -56,13 +56,11 @@ public class DBAccess {
 	 * @param newUser User being added to the database.
 	 */
 	public static void registerUser(User newUser) {
-		String query = "INSERT INTO User ('fname', " +
-						"'lname', 'password', 'moderator'," +
-						"'email', 'userName') VALUES ('" + newUser.getfName() +
+		String query = "INSERT INTO Users VALUES (null, '" + newUser.getfName() +
 						"', '" + newUser.getlName() + "', '" + newUser.getPassword() +
 						"', " + newUser.isMod() + ", '" + newUser.getEmail() +
 						"', '" + newUser.getUser() + "');";
-
+		System.out.println(query);
 		db.performQuery(query);
 	}
 }
