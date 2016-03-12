@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
-import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -28,6 +27,7 @@ public class HomePage {
 	private JPanel mySearchPanel;
 	private JPanel myLogInPanel;
 	private JLabel invalid;
+	private JTextField mySearchBox;
 	private JTextField myUserName;
 	private JTextField myPassword;
 	private String myUserString;
@@ -64,8 +64,12 @@ public class HomePage {
 	private void searchPanel() {
 		mySearchPanel = new JPanel();
 		mySearchPanel.setLayout(new GridBagLayout());
+		mySearchBox = new JTextField(15);
 		JButton search = createButton("Search");
+		mySearchPanel.add(mySearchBox);
 		mySearchPanel.add(search);
+		JButton advancedSearch = new JButton("Advanced Search");
+		mySearchPanel.add(advancedSearch);
 		myFrame.add(mySearchPanel, BorderLayout.CENTER);
 	}
 
