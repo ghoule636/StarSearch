@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -36,6 +37,8 @@ public class HomePage {
 	private JTextField myPassword;
 	private String myUserString;
 	private String myPassString;
+	private String newUserName;
+	private String newPass;
 	private ArrayList<User> myUsers = new ArrayList<User>();
 	
 	public HomePage() {
@@ -123,12 +126,23 @@ public class HomePage {
 				}
 			}
 		});
+		JButton newAccount = new JButton("New Account");
+		newAccount.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent theEvent) {
+				NewUser.showRegisterDialog(myFrame);
+			}
+		});
+		
+		
 		myPassword.addActionListener(new LogOnListener());
 		JButton enter = new JButton("Enter");
 		enter.addActionListener(new LogOnListener());
+
 		myLogInPanel.add(myUserName);
 		myLogInPanel.add(myPassword);
 		myLogInPanel.add(enter);
+		myLogInPanel.add(newAccount);
 		invalid = new JLabel("");
 		invalid.setForeground(Color.RED);
 		myLogInPanel.add(invalid);
@@ -200,5 +214,4 @@ public class HomePage {
 	private void logon() {
 		JOptionPane.showMessageDialog(myLogInPanel, "YOU SIGNED IN!");
 	}
-
 }
