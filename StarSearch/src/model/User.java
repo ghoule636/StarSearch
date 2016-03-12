@@ -3,7 +3,7 @@ package model;
 public class User {
 	
 	private int userID;
-	
+		
 	private String fName;
 	
 	private String lName;
@@ -16,7 +16,7 @@ public class User {
 	
 	private String email;
 
-	public User(int theID, String theFName, String theLName, String thePass,
+	public User(String theFName, String theLName, String thePass,
 				boolean theMod, String theEmail, String theUser) {
 		
 		email = theEmail;
@@ -25,18 +25,18 @@ public class User {
 		password = thePass;
 		lName = theLName;
 		fName = theFName;
-		userID = theID;
+		userID = 0;
 	}
 	
 	public User() {
 		
-		userID = 0;
 		fName = "";
 		lName = "";
 		user = "";
 		password = "";
 		mod = false;
 		email = "";
+		userID = 0;
 		
 	}
 	
@@ -46,14 +46,6 @@ public class User {
 			result = true;
 		}
 		return result;
-	}
-
-	public int getUserID() {
-		return userID;
-	}
-
-	public void setUserID(int theID) {
-		userID = theID;
 	}
 
 	public String getfName() {
@@ -107,10 +99,18 @@ public class User {
 	public boolean equals(User theUser) {
 		boolean result = false;
 		
-		if (theUser.getUserID() == userID && theUser.getEmail().equals(user)) {
+		if (theUser.getUser().equals(user) || theUser.getEmail().equals(email)) {
 			result = true;
 		}
 		
 		return result;
+	}
+
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 }

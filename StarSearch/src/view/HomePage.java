@@ -33,6 +33,8 @@ public class HomePage {
 	private JTextField myPassword;
 	private String myUserString;
 	private String myPassString;
+	private String newUserName;
+	private String newPass;
 	private ArrayList<User> myUsers = new ArrayList<User>();
 	
 	public HomePage() {
@@ -106,7 +108,7 @@ public class HomePage {
 		newAccount.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent theEvent) {
-				newUser.showRegisterDialog(myFrame);
+				NewUser.showRegisterDialog(myFrame);
 			}
 		});
 		
@@ -156,16 +158,5 @@ public class HomePage {
 	
 	private void logon() {
 		JOptionPane.showMessageDialog(myLogInPanel, "YOU SIGNED IN!");
-	}
-
-	private static class newUser extends JDialog {
-		private newUser(JFrame parent) {
-			super(parent, "New Account", true);
-	        setVisible(true);
-		}
-		
-		public static void showRegisterDialog(JFrame parent) {
-			new newUser(parent);
-		}
 	}
 }
