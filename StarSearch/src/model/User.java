@@ -103,4 +103,14 @@ public class User {
 	public void setEmail(String theEmail) {
 		email = theEmail;
 	}
+	
+	public boolean equals(User theUser) {
+		boolean result = false;
+		
+		if (theUser.getUserID() == userID && theUser.getEmail().equals(user)) {
+			result = true;
+		}
+		
+		return result;
+	}
 }

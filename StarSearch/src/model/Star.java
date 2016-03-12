@@ -117,4 +117,8 @@ public class Star {
 	public void setDescription(String theDescrip) {
 		description = theDescrip;
 	}
+	
+	public String toString() {
+		return name;
+	}
 }
