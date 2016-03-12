@@ -18,7 +18,6 @@ public class Main {
      * @param theArgs : The command line arguments.
      */
     public static void main(final String[] theArgs) {
-    	
     	DBAccess.getUsers();
         EventQueue.invokeLater(new Runnable() {
             @Override
