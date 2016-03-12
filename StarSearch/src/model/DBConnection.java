@@ -19,7 +19,7 @@ public class DBConnection {
 		      }
 		}
 
-		public String SelectQuery(String query){
+		public String selectQuery(String query){
 		    Statement statement;
 		    String result = "";
 			try {
@@ -37,6 +37,21 @@ public class DBConnection {
 		}
 		
 		/**
+		 * This will run a given update Query.
+		 * 
+		 * @param query Update query as a string in SQL.
+		 */
+		public void updateQuery(String query){
+			Statement stm;
+			try {
+				stm = Conn.createStatement();
+				stm.executeUpdate(query); 
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		/**
 		 * Searches the database for a star of the given search name.
 		 * 
 		 * @param searchStr Name of star being searched for.
@@ -50,16 +65,16 @@ public class DBConnection {
 			String queryString;
 			Statement statement = Conn.createStatement();
 			ResultSet rset ;
-			queryString = "select *" +
-						  " from Star " +
-						  "where name = '%"+ searchStr +"%');";
+			queryString = "SELECT *" +
+						  " FROM Star " +
+						  "WHERE starName = '"+ searchStr +"';";
 			rset = statement.executeQuery(queryString);
 			while(rset.next()){
 				Star s = new Star();
 				s.setStarID(rset.getInt("starID"));
-				s.setName(rset.getString("name"));
+				s.setName(rset.getString("starName"));
 				s.setTemperature(rset.getInt("temperature"));
-				s.setType(rset.getString("type"));
+				s.setType(rset.getString("starType"));
 				s.setMass(rset.getInt("mass"));
 				s.setDiameter(rset.getInt("diameter"));
 				s.setDistance(rset.getInt("distance"));
@@ -69,5 +84,37 @@ public class DBConnection {
 			starArr = new Star[vStar.size()];
 			vStar.toArray(starArr);
 			return  starArr;
+		}
+		
+
+		/**
+		 * This function will return all users in the Users table of the database.
+		 * 
+		 * @return Array of all users.
+		 * @throws SQLException
+		 */
+		public User[] getUsers() throws SQLException{
+			User userArr[];
+			Vector<User> vUser = new Vector<User>();
+
+			String queryString;
+			Statement statement = Conn.createStatement();
+			ResultSet rset ;
+			queryString = "SELECT *" +
+						  " FROM Users;"; 
+			rset = statement.executeQuery(queryString);
+			while(rset.next()){
+				User u = new User();
+				u.setUserID(rset.getInt("userID"));
+				u.setfName(rset.getString("fname"));
+				u.setlName(rset.getString("lname"));
+				u.setPassword(rset.getString("password"));
+				u.setUser(rset.getString("userName"));
+				u.setMod(rset.getBoolean("moderator"));
+				vUser.add(u);
+			}
+			userArr = new User[vUser.size()];
+			vUser.toArray(userArr);
+			return  userArr;
 		}
 }

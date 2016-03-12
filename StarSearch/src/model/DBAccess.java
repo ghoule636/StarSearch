@@ -11,7 +11,7 @@ public class DBAccess {
 	public static String query(String theQuery) {
 		String result = "";
 		
-		db.SelectQuery(theQuery);
+		db.selectQuery(theQuery);
 		
 		return result;
 	}
@@ -24,7 +24,7 @@ public class DBAccess {
 	 * @return List of all stars with given name.
 	 * @throws SQLException Bad Database connection.
 	 */
-	public static Star[] searchStar(String searchStr) throws SQLException{
+	public static Star[] searchStar(String searchStr) {
 		
 		try {
 			return db.searchStars(searchStr);
@@ -32,5 +32,29 @@ public class DBAccess {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * This function will return all users as an array.
+	 * 
+	 * @return User array containing all users.
+	 */
+	public static User[] getUsers() {
+		try {
+			return db.getUsers();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * This function will perform an update query on the database and add
+	 * the new user to the database.
+	 * 
+	 * @param newUser User being added to the database.
+	 */
+	public static void registerUser(User newUser) {
+		
 	}
 }
