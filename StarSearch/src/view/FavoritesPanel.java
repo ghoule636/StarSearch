@@ -107,6 +107,9 @@ public class FavoritesPanel extends JPanel {
 	 */
 	private void setup() {
 		setLayout(new BorderLayout());
+		myCenter = new JPanel();
+		mySouth = new JPanel();
+		myNorth = new JPanel();
 		myCenter.setLayout(new GridBagLayout());
 		if (myStars.length == 0) {
 			myErrorMessage = new JLabel("No favorites found!");
