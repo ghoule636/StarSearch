@@ -17,7 +17,6 @@ public class DBConnection {
 		      try {
 		         Class.forName("com.mysql.jdbc.Driver");
 		         Conn = DriverManager.getConnection(theUrl[0], theUrl[1], theUrl[2]);
-		         System.out.println("connected");	       
 		      } catch (Exception e) {
 		         System.out.println(e);
 		      }
@@ -186,9 +185,9 @@ public class DBConnection {
 			String queryString;
 			Statement statement = Conn.createStatement();
 			ResultSet rset;
-			queryString = "SELECT * FROM Favorites" +
-							"WHERE userID = '" + theUser.getUserID() + 
-							"' && starID = '" + theStar.getStarID() + "';";
+			queryString = "SELECT * FROM Favorites " +
+							"WHERE userID = " + theUser.getUserID() + 
+							" && starID = " + theStar.getStarID() + ";";
 			rset = statement.executeQuery(queryString);
 			while(rset.next()) {
 				result.setFavoriteID(rset.getInt("favoriteID"));

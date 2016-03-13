@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -31,6 +32,7 @@ import model.User;
  */
 public class NewUser extends JDialog {
 	
+
 	/**
 	 * Generated serial number.
 	 */
@@ -230,7 +232,6 @@ public class NewUser extends JDialog {
 		
 		for (int i = 0; i < myUsers.length; i++) {
 			if (theUser.equals(myUsers[i])) {
-				System.out.println("Already in system" + myUsers[i].getEmail());
 				result = false;
 			}
 		}
@@ -282,14 +283,15 @@ public class NewUser extends JDialog {
 			if (verifyEmail()) { // checks if email has the @ symbol inside it.
 				if (verifyBlanks()) { // checks to make sure the other fields are not blank.
 					if (verifyNewUser(newUser)) { //checks to see if the user already exists.
-						System.out.println("added User");
 						DBAccess.registerUser(newUser);
+						JOptionPane.showMessageDialog(null, "New User created successfully!");
+						dispose();
 					} else {
 						errorMessage.setText("UserName or email already exists in System!");
 						errorMessage.setVisible(true);
 					}
 				} else {
-					errorMessage.setText("No blank inputs allowed!");
+					errorMessage.setText("No blank inputs or ' chars allowed!");
 					errorMessage.setVisible(true);
 				}
 			} else {

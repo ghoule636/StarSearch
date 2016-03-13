@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import model.DBAccess;
+import model.Favorite;
 import model.Star;
 import model.User;
 
@@ -47,6 +50,11 @@ public class FavoritesPanel extends JPanel {
 	 * Stores the currently displayed star.
 	 */
 	private Star myCurrentStar;
+	
+	/**
+	 * Stores the current comment and rating.
+	 */
+	private Favorite myCurrentFavorite;
 	
 	/**
 	 * Stores the results panel where text is displayed.
@@ -84,6 +92,11 @@ public class FavoritesPanel extends JPanel {
 	private JButton myNext;
 	
 	/**
+	 * Stores the delete button.
+	 */
+	private JButton myDelete;
+	
+	/**
 	 * Displays the user comment for this star.
 	 */
 	private JTextField myComment;
@@ -115,8 +128,28 @@ public class FavoritesPanel extends JPanel {
 			myErrorMessage = new JLabel("No favorites found!");
 			myCenter.add(myErrorMessage);
 		} else {
-			myComment = new JTextField();
-			myRating = new JTextField();
+			myComment = new JTextField(15);
+			myRating = new JTextField(2);
+			
+			myComment.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyReleased(final KeyEvent theEvent) {
+					if (theEvent.getKeyCode() != KeyEvent.VK_ENTER) {
+						myCurrentFavorite.setUserComment(myComment.getText());
+					}
+				} 
+			});
+			myComment.addActionListener(new UpdateListener());
+			myRating.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyReleased(final KeyEvent theEvent) {
+					if (theEvent.getKeyCode() != KeyEvent.VK_ENTER) {
+						myCurrentFavorite.setRating(getValue(myRating.getText()));
+					}
+				} 
+			});
+			myRating.addActionListener(new UpdateListener());
+			
 			myResults.setEditable(false);
 			myResults.setPreferredSize(new Dimension(400, 325));
 			displayNext();
@@ -128,9 +161,24 @@ public class FavoritesPanel extends JPanel {
 					displayNext();
 				}
 			});
+			
+			myDelete = new JButton("Remove from Favorites");
+			myDelete.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent theEvent) {
+					DBAccess.deleteFavorite(myCurrentFavorite);
+					displayNext();
+				}
+			});
+			
+			JButton updateComment = new JButton("Update Comment/rating");
+			updateComment.addActionListener(new UpdateListener());
+			
 			myNorth.add(myNext);
+			myNorth.add(myDelete);
 			mySouth.add(myComment);
 			mySouth.add(myRating);
+			mySouth.add(updateComment);
 		}
 		
 		add(myNorth, BorderLayout.NORTH);
@@ -138,23 +186,53 @@ public class FavoritesPanel extends JPanel {
 		add(mySouth, BorderLayout.SOUTH);
 	}
 	
+	private int getValue(String theStr) {
+		if (theStr.length() > 0) {
+			return Integer.parseInt(theStr);
+		} else {
+			return 0;
+		}
+	}
 	/**
 	 * Displays the next star in the given users favorites list.
 	 */
 	private void displayNext() {
-		if (myCurrentIndex < myStars.length) {
+		myStars = DBAccess.getFavoriteStars(myUser);
+
+		if (myStars.length == 0) {
+			myErrorMessage = new JLabel("No favorites found!");
+			myCenter.removeAll();
+			mySouth.removeAll();
+			myCenter.add(myErrorMessage);
+			revalidate();
+			myNext.setEnabled(false);
+			myDelete.setEnabled(false);
+			
+		} else if (myCurrentIndex < myStars.length) {
 			myCurrentStar = myStars[myCurrentIndex];
 			
+			myCurrentFavorite = DBAccess.getComment(myUser, myCurrentStar);
 			
 			myResults.setText("Information about: " + myCurrentStar.getName() + " \n\n" +
 							myCurrentStar.getDescription() + " \n\nSolar Masses: " + myCurrentStar.getMass() +
 							" \n\nStar Type: " + myCurrentStar.getType() + " \n\nConstellationID: " +
 							myCurrentStar.getConstellationID() + " \n\nSolar Diameter:" + myCurrentStar.getDiameter() +
 							" \n\nDistance from Sol (in Light Years): " + myCurrentStar.getDistance());
+			
+			myRating.setText(myCurrentFavorite.getRating() + "");
+			myComment.setText(myCurrentFavorite.getUserComment());
+			
 			myCurrentIndex++;
 		} else {
 			myCurrentIndex = 0;
 			displayNext();
+		}
+	}
+	
+	private class UpdateListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent theEvent) {
+			DBAccess.updateComment(myCurrentFavorite);
 		}
 	}
 }
