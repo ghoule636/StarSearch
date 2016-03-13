@@ -14,11 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.net.URL;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import model.DBAccess;
+import model.Favorite;
 import model.Star;
 import model.User;
 
@@ -36,7 +34,8 @@ import model.User;
  */
 public class HomePage {
 	private JFrame myFrame;
-	//private Favorite myFavorite;
+	private Favorite myFavoriteStar;
+	private FavoritesPanel myFavoritesPanel;
 	private JButton myHome;
 	private JButton mySearch;
 	private JButton myFavoriteButton;
@@ -209,7 +208,7 @@ public class HomePage {
 			Star[] savedStar = DBAccess.searchStar(mySearchedStar);
 			if (savedStar.length != 0) {
 				myFavoriteButton.setEnabled(true);
-				//myFavoriteStar = new Favorite(myUser.getUserID(), savedStar[0].getStarID(), 0, "Default");
+				myFavoriteStar = new Favorite(myUser.getUserID(), savedStar[0].getStarID(), 0, "Default");
 			}
 			myFavorites.setEnabled(true);
 			myFrame.getContentPane().revalidate();
@@ -224,9 +223,21 @@ public class HomePage {
 				case "New Account":
 					NewUser.showRegisterDialog(myFrame);
 					break;
-				//case "Add to Favorites";
-					//DBAccess.addFavorite(favoriteStar);
-					//break;
+				case "Display Favorites":
+					myFrame.getContentPane().removeAll();
+					myFrame.setLayout(new BorderLayout());
+					myFavoritesPanel = new FavoritesPanel(myUser);
+					myFrame.add(setUpLogOutPanel(), BorderLayout.SOUTH);
+					myFavoriteButton.setEnabled(false);
+					myFavorites.setEnabled(false);
+					myFrame.add(myFavoritesPanel, BorderLayout.CENTER);
+					myFrame.getContentPane().revalidate();
+					myFrame.getContentPane().repaint();
+					break;
+				case "Add to Favorites":
+					DBAccess.addFavorite(myFavoriteStar);
+					JOptionPane.showMessageDialog(null, "Star added to your favorites: Display Favorites to view");
+					break;
 				case "Search":
 					searchDataBase();
 					break;
@@ -240,6 +251,7 @@ public class HomePage {
 					myFrame.getContentPane().repaint();
 					break;
 				case "Log Out":
+					myLogOn = false;
 					myFrame.getContentPane().removeAll();
 					myFrame.setLayout(new BorderLayout());
 					myFrame.add(setUpLogInPanel(), BorderLayout.NORTH);

@@ -74,8 +74,8 @@ public class DBAccess {
 	 * @param newFavorite Favorite object being added.
 	 */
 	public static void addFavorite(Favorite newFavorite) {
-		String query = "INSERT INTO Users VALUES (null, '"  + newFavorite.getUserID() + "', '" +
-						newFavorite.getStarID() + "', '" + newFavorite.getRating() + "', '" +
+		String query = "INSERT INTO Favorites VALUES (null, "  + newFavorite.getUserID() + ", " +
+						newFavorite.getStarID() + ", " + newFavorite.getRating() + ", '" +
 						newFavorite.getUserComment() + "');";
 		db.performQuery(query);
 	}
