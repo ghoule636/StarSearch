@@ -65,7 +65,6 @@ public class DBAccess {
 						"', '" + newUser.getlName() + "', '" + newUser.getPassword() +
 						"', " + newUser.isMod() + ", '" + newUser.getEmail() +
 						"', '" + newUser.getUser() + "');";
-		System.out.println(query);
 		db.performQuery(query);
 	}
 }

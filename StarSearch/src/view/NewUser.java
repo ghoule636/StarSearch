@@ -240,6 +240,8 @@ public class NewUser extends JDialog {
 	
 	/**
 	 * Checks to make sure that all text fields are not blank.
+	 * Attempts to stop SQL injection by blocking any fields that 
+	 * contain a single quote.
 	 * 
 	 * @return True if there are no blanks and false otherwise.
 	 */
@@ -247,13 +249,15 @@ public class NewUser extends JDialog {
 		
 		boolean result  = true;
 		
-		if (fName.isEmpty()) {
+		if (fName.isEmpty() || fName.contains("'")) {
 			result = false;
-		} else if (lName.isEmpty()) {
+		} else if (lName.isEmpty() || lName.contains("'")) {
 			result = false;
-		} else if (myPass.isEmpty()) {
+		} else if (myPass.isEmpty() || myPass.contains("'")) {
 			result = false;
-		} else if (myUser.isEmpty()) {
+		} else if (myUser.isEmpty() || myUser.contains("'")) {
+			result = false;
+		} else if (email.contains("'")) {
 			result = false;
 		}
 		
