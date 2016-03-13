@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import model.DBAccess;
+import model.Star;
 import model.User;
 
 /**
@@ -35,15 +36,21 @@ import model.User;
  */
 public class HomePage {
 	private JFrame myFrame;
+	//private Favorite myFavorite;
 	private JButton myHome;
+	private JButton mySearch;
+	private JButton myFavoriteButton;
+	private JButton myFavorites;
+	private JButton myNewAccount;
 	private JButton myLogOutButton;
+	private JButton myEnter;
 	private JPanel mySearchPanel;
 	private JPanel myLogInPanel;
 	private JPanel myLogOutPanel;
 	private JPanel myUserPanel;
 	private JPanel myHomePanel;
 	private ResultsPanel myCenter;
-	private JLabel invalid;
+	private JLabel myInvalid;
 	private JTextField mySearchBox;
 	private String mySearchedStar;
 	private JTextField myUserName;
@@ -63,41 +70,24 @@ public class HomePage {
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		myFrame.setMinimumSize(new Dimension(500, 500));
 		myFrame.setResizable(false);
-		//setImages();
-		setUpHome();
-		logInPanel();
-		searchPanel();
+		myFrame.add(setUpLogInPanel(), BorderLayout.NORTH);
+		myFrame.add(setUpHomePanel(), BorderLayout.SOUTH);
+		myFrame.add(setUpSearchPanel(), BorderLayout.CENTER);
 		myFrame.setLocationRelativeTo(null);
 		myFrame.setVisible(true);
 	}
 	
-	private void setUpHome() {
+	private JPanel setUpHomePanel() {
 		myHome = createButton("Return to Star Search Home");
 		myHome.setEnabled(false);
 		myHomePanel = new JPanel();
 		myHomePanel.add(myHome);
-		myFrame.add(myHomePanel, BorderLayout.SOUTH);
+		//myFrame.add(myHomePanel, BorderLayout.SOUTH);
+		return myHomePanel;
 	}
 	
-	private void setUpLogOut() {
-		myLogOutButton = createButton("Log Out");
-		myLogOutPanel = new JPanel();
-		myLogOutPanel.add(myLogOutButton);
-		myFrame.add(myLogOutPanel, BorderLayout.SOUTH);
-	}
-	
-	private void setImages() {
-		URL icon = HomePage.class.getResource("/golden_star.png");
-		ImageIcon frameIcon = new ImageIcon(icon);
-		myFrame.setIconImage(frameIcon.getImage());	
-		URL background = HomePage.class.getResource("/night_sky.jpg");
-		ImageIcon backgroundIcon = new ImageIcon(background);
-		JLabel backgroundImage = new JLabel(backgroundIcon);
-		myFrame.add(backgroundImage); 
-		myFrame.pack();
-	}
-	
-	private void searchPanel() {
+	private JPanel setUpSearchPanel() {
+		mySearch = createButton("Search");
 		mySearchPanel = new JPanel();
 		mySearchPanel.setLayout(new GridBagLayout());
 		mySearchBox = new JTextField(15);
@@ -109,22 +99,12 @@ public class HomePage {
 				}
 			}
 		});
-		JButton search = createButton("Search");
-		//////////mySearchBox.addActionListener(new HomeListener());
 		mySearchPanel.add(mySearchBox);
-		mySearchPanel.add(search);
-		JButton advancedSearch = new JButton("Advanced Search");
-		mySearchPanel.add(advancedSearch);
-		myFrame.add(mySearchPanel, BorderLayout.CENTER);
-	}
-
-	private JButton createButton(String string) {
-		JButton button = new JButton(string);
-		button.addActionListener(new HomeListener());
-		return button;
+		mySearchPanel.add(mySearch);
+		return mySearchPanel;
 	}
 	
-	private void logInPanel() {
+	private JPanel setUpLogInPanel() {
 		myLogInPanel = new JPanel();
 		myLogInPanel.setLayout(new FlowLayout(FlowLayout.TRAILING));
 		myUserName = new JTextField(6);
@@ -146,98 +126,37 @@ public class HomePage {
 				}
 			}
 		});
-		JButton newAccount = new JButton("New Account");
-		newAccount.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent theEvent) {
-				NewUser.showRegisterDialog(myFrame);
-			}
-		});
-		
-		
+		myNewAccount = createButton("New Account");
 		myPassword.addActionListener(new LogOnListener());
-		JButton enter = new JButton("Enter");
-		enter.addActionListener(new LogOnListener());
-
+		myEnter = new JButton("Enter");
+		myEnter.addActionListener(new LogOnListener());
 		myLogInPanel.add(myUserName);
 		myLogInPanel.add(myPassword);
-		myLogInPanel.add(enter);
-		myLogInPanel.add(newAccount);
-		invalid = new JLabel("");
-		invalid.setForeground(Color.RED);
-		myLogInPanel.add(invalid);
-		myFrame.add(myLogInPanel, BorderLayout.NORTH);
-	}
-
-	private class HomeListener implements ActionListener {
-		public void actionPerformed(ActionEvent theEvent) {
-			switch (theEvent.getActionCommand()) {
-				case "Search":
-					createResultsView();
-					break;
-				case "Return to Star Search Home": 
-					createBackToHome();
-					break;
-				case "Log Out": 
-					createBackToHome();
-			}
-		}
+		myLogInPanel.add(myEnter);
+		myLogInPanel.add(myNewAccount);
+		myInvalid = new JLabel("");
+		myInvalid.setForeground(Color.RED);
+		myLogInPanel.add(myInvalid);
+		return myLogInPanel;
 	}
 	
-	private void createResultsView() {
-		if (!myHome.isEnabled()) {
-			myHome.setEnabled(true);
-			myFrame.getContentPane().remove(mySearchPanel);
-			myFrame.getContentPane().remove(myLogInPanel);
-			myCenter = null;
-			myCenter = new ResultsPanel(mySearchedStar);
-			myFrame.getContentPane().add(myCenter, BorderLayout.CENTER);
-			myFrame.getContentPane().add(mySearchPanel, BorderLayout.NORTH);
-			myFrame.revalidate();
-		} 
-//		else if (myLogOn) {
-//			setUpLogOut();
-//			myFrame.getContentPane().remove(mySearchPanel);
-//			myFrame.getContentPane().remove(myLogInPanel);
-//			myFrame.getContentPane().remove(myUserPanel);
-//			myFrame.getContentPane().remove(myHomePanel);
-//			myCenter = null;
-//			myCenter = new ResultsPanel(mySearchedStar);
-//			myFrame.getContentPane().add(myCenter, BorderLayout.CENTER);
-//			myFrame.getContentPane().add(mySearchPanel, BorderLayout.NORTH);
-//			myFrame.getContentPane().add(myLogOutPanel, BorderLayout.SOUTH);
-//			myFrame.revalidate();
-//		} 
-		else {
-			myFrame.getContentPane().remove(myCenter);
-			myCenter = null;
-			myCenter = new ResultsPanel(mySearchedStar);
-			myFrame.getContentPane().add(myCenter, BorderLayout.CENTER);
-			myFrame.revalidate();
-		}
-
+	private JPanel setUpLogOutPanel() {
+		myLogOutButton = createButton("Log Out");
+		myFavoriteButton = createButton("Add to Favorites");
+		myFavoriteButton.setEnabled(false);
+		myFavorites = createButton("Display Favorites");
+		myFavorites.setEnabled(false);
+		myLogOutPanel = new JPanel();
+		myLogOutPanel.add(myLogOutButton);
+		myLogOutPanel.add(myFavoriteButton);
+		myLogOutPanel.add(myFavorites);
+		return myLogOutPanel;
 	}
 	
-	private void createBackToHome() {
-		myHome.setEnabled(false);
-		myFrame.getContentPane().remove(myCenter);
-		myFrame.getContentPane().remove(mySearchPanel);
-		myCenter = null;
-		mySearchPanel = null;
-		logInPanel();
-		searchPanel();
-		myFrame.revalidate();
-	}
-	
-	private class LogOnListener implements ActionListener {
-		public void actionPerformed(ActionEvent theEvent) {
-			if(verifyUser()) {
-				//logon();
-				myLogOn = true;
-			} else {
-				invalid.setText("Invalid Login Information!");
-			}
-		}
+	private JButton createButton(String string) {
+		JButton button = new JButton(string);
+		button.addActionListener(new HomeListener());
+		return button;
 	}
 	
 	private boolean verifyUser() {
@@ -246,21 +165,100 @@ public class HomePage {
 		for (int i = 0; i < myUsers.length && result == false; i++) {
 			if (myUsers[i].isUser(myUserString, myPassString)) {
 				result = true;
-				myUser = myUsers[0];
+				myUser = myUsers[i];
 			} 
 		} 
 		return result;
 	}
 	
 	private void logon() {
+		myLogOn = true;
 		myUserPanel = new JPanel();
 		JTextPane theUser = new JTextPane();
 		theUser.setEditable(false);
-		theUser.setText("Welcome " + myUser.getfName());
+		theUser.setText("Welcome  " + myUser.getfName());
 		myUserPanel.add(theUser);
-		myFrame.getContentPane().remove(myLogInPanel);
-		myFrame.getContentPane().add(myUserPanel, BorderLayout.NORTH);
-		myFrame.revalidate();
+		myFrame.getContentPane().removeAll();
+		myFrame.setLayout(new BorderLayout());
+		myFrame.add(myUserPanel, BorderLayout.NORTH);
+		myFrame.add(setUpSearchPanel(), BorderLayout.CENTER);
+		myFrame.add(setUpLogOutPanel(), BorderLayout.SOUTH);
+		myFavorites.setEnabled(true);
+		myFrame.getContentPane().revalidate();
+		myFrame.getContentPane().repaint();
 	}
-
+	
+	private void searchDataBase() {
+		if (!myLogOn) {
+			myFrame.getContentPane().removeAll();
+			myFrame.setLayout(new BorderLayout());
+			myCenter = new ResultsPanel(mySearchedStar);
+			myFrame.add(setUpSearchPanel(), BorderLayout.NORTH);
+			myFrame.add(setUpHomePanel(), BorderLayout.SOUTH);
+			myHome.setEnabled(true);
+			myFrame.add(myCenter, BorderLayout.CENTER);
+			myFrame.getContentPane().revalidate();
+			myFrame.getContentPane().repaint();
+		} else {
+			myFrame.getContentPane().removeAll();
+			myFrame.setLayout(new BorderLayout());
+			myCenter = new ResultsPanel(mySearchedStar);
+			myFrame.add(setUpSearchPanel(), BorderLayout.NORTH);
+			myFrame.add(myCenter, BorderLayout.CENTER);
+			myFrame.add(setUpLogOutPanel(), BorderLayout.SOUTH);
+			Star[] savedStar = DBAccess.searchStar(mySearchedStar);
+			if (savedStar.length != 0) {
+				myFavoriteButton.setEnabled(true);
+				//myFavoriteStar = new Favorite(myUser.getUserID(), savedStar[0].getStarID(), 0, "Default");
+			}
+			myFavorites.setEnabled(true);
+			myFrame.getContentPane().revalidate();
+			myFrame.getContentPane().repaint();
+		}
+	}
+	
+	
+	private class HomeListener implements ActionListener {
+		public void actionPerformed(ActionEvent theEvent) {
+			switch (theEvent.getActionCommand()) {
+				case "New Account":
+					NewUser.showRegisterDialog(myFrame);
+					break;
+				//case "Add to Favorites";
+					//DBAccess.addFavorite(favoriteStar);
+					//break;
+				case "Search":
+					searchDataBase();
+					break;
+				case "Return to Star Search Home":
+					myFrame.getContentPane().removeAll();
+					myFrame.setLayout(new BorderLayout());
+					myFrame.add(setUpLogInPanel(), BorderLayout.NORTH);
+					myFrame.add(setUpSearchPanel(), BorderLayout.CENTER);
+					myFrame.add(setUpHomePanel(), BorderLayout.SOUTH);
+					myFrame.getContentPane().revalidate();
+					myFrame.getContentPane().repaint();
+					break;
+				case "Log Out":
+					myFrame.getContentPane().removeAll();
+					myFrame.setLayout(new BorderLayout());
+					myFrame.add(setUpLogInPanel(), BorderLayout.NORTH);
+					myFrame.add(setUpSearchPanel(), BorderLayout.CENTER);
+					myFrame.add(setUpHomePanel(), BorderLayout.SOUTH);
+					myFrame.getContentPane().revalidate();
+					myFrame.getContentPane().repaint();
+					break;
+			}
+		}
+	}
+	
+	private class LogOnListener implements ActionListener {
+		public void actionPerformed(ActionEvent theEvent) {
+			if(verifyUser()) {
+				logon();
+			} else {
+				myInvalid.setText("Invalid Login Information!");
+			}
+		}
+	}
 }
