@@ -81,6 +81,23 @@ public class DBAccess {
 	}
 	
 	/**
+	 * Returns a comment on a given star for a given user.
+	 * 
+	 * @param theUser The current user.
+	 * @param theStar The currently viewed star.
+	 * @return The comment and rating as a favorite object.
+	 */
+	public static Favorite getComment(User theUser, Star theStar) {
+		
+		try {
+			return db.getComment(theUser, theStar);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	/**
 	 * This function will perform an insert query on the database and add
 	 * the new user to the database. This functions assumes that the given user
 	 * is unique.
