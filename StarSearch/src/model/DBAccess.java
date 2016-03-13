@@ -97,6 +97,35 @@ public class DBAccess {
 		
 		return null;
 	}
+	
+	/**
+	 * This method will perform an update on the database, so that we can
+	 * update comments.
+	 * 
+	 * @param theFavorite The new rating and comment.
+	 */
+	public static void updateComment(Favorite theFavorite) {
+		String query = "UPDATE Favorites SET rating = " + theFavorite.getRating() +
+						" WHERE favoriteID = " + theFavorite.getFavoriteID() + ";";
+		db.updateQuery(query);
+		
+		query = "UPDATE Favorites SET userComment = '" + theFavorite.getUserComment() +
+				"' WHERE favoriteID = " + theFavorite.getFavoriteID() + ";";
+
+		db.updateQuery(query);
+	}
+	
+	/**
+	 * This function will delete the given favorite from the database.
+	 * 
+	 * @param theFavorite The favorite being deleted.
+	 */
+	public static void deleteFavorite(Favorite theFavorite) {
+		String query = "DELETE FROM Favorites WHERE favoriteID = " + theFavorite.getFavoriteID();
+		
+		db.performQuery(query);
+	}
+	
 	/**
 	 * This function will perform an insert query on the database and add
 	 * the new user to the database. This functions assumes that the given user

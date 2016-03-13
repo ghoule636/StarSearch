@@ -14,7 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -173,6 +175,9 @@ public class HomePage {
 	 */
 	public HomePage() {
 		myFrame = new JFrame("Star Search Database");
+		URL icon = HomePage.class.getResource("/golden_star.png");
+		ImageIcon frameIcon = new ImageIcon(icon);
+		myFrame.setIconImage(frameIcon.getImage());
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		myFrame.setMinimumSize(new Dimension(500, 500));
 		myFrame.setResizable(false);
@@ -404,6 +409,9 @@ public class HomePage {
 					break;
 				case "Log Out":
 					myLogOn = false;
+					myUserString = "";
+					myPassString = "";
+					mySearchedStar = "";
 					myFrame.getContentPane().removeAll();
 					myFrame.setLayout(new BorderLayout());
 					myFrame.add(setUpLogInPanel(), BorderLayout.NORTH);
@@ -422,6 +430,7 @@ public class HomePage {
 	 */
 	private class LogOnListener implements ActionListener {
 		public void actionPerformed(ActionEvent theEvent) {
+			myUsers = DBAccess.getUsers();
 			if(verifyUser()) {
 				logon();
 			} else {
