@@ -83,7 +83,7 @@ public class DBConnection {
 
 			String queryString;
 			Statement statement = Conn.createStatement();
-			ResultSet rset ;
+			ResultSet rset;
 			queryString = "SELECT *" +
 						  " FROM Star " +
 						  "WHERE starName = '"+ searchStr +"';";
@@ -117,7 +117,7 @@ public class DBConnection {
 
 			String queryString;
 			Statement statement = Conn.createStatement();
-			ResultSet rset ;
+			ResultSet rset;
 			queryString = "SELECT *" +
 						  " FROM Users;"; 
 			rset = statement.executeQuery(queryString);
@@ -135,5 +135,55 @@ public class DBConnection {
 			userArr = new User[vUser.size()];
 			vUser.toArray(userArr);
 			return  userArr;
+		}
+		
+		/**
+		 * This query will return all stars that a given user has added to favorites.
+		 * 
+		 * @param theUser The user whose favorites we are loading.
+		 * @return Array of favorite stars.
+		 * @throws SQLException
+		 */
+		public Star[] getFavoriteStars(User theUser) throws SQLException {
+			Star starArr[];
+			Vector<Star> vStar = new Vector<Star>();
+
+			String queryString;
+			Statement statement = Conn.createStatement();
+			ResultSet rset;
+			queryString = "SELECT *" +
+						  " FROM Star JOIN Favorites ON Star.starID = Favorites.starID " +
+						  "WHERE userID = '"+ theUser.getUserID() +"';";
+			rset = statement.executeQuery(queryString);
+			while(rset.next()) {
+				Star s = new Star();
+				s.setStarID(rset.getInt("starID"));
+				s.setName(rset.getString("starName"));
+				s.setTemperature(rset.getInt("temperature"));
+				s.setType(rset.getString("starType"));
+				s.setMass(rset.getInt("mass"));
+				s.setDiameter(rset.getInt("diameter"));
+				s.setDistance(rset.getInt("distance"));
+				s.setDescription(rset.getString("description"));
+				vStar.add(s);
+			}
+			starArr = new Star[vStar.size()];
+			vStar.toArray(starArr);
+			return  starArr;
+		}
+		
+		/**
+		 * This function will get the current user rating and comment for a given
+		 * star and user.
+		 * 
+		 * @param theUser The current user.
+		 * @param theStar The star being loaded.
+		 * @return Object containing the comment and rating.
+		 */
+		public Favorite getFavorite(User theUser, Star theStar) {
+			Favorite result = new Favorite();
+			
+			
+			return result;
 		}
 }

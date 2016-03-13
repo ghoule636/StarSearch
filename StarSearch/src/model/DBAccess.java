@@ -54,6 +54,33 @@ public class DBAccess {
 	}
 	
 	/**
+	 * This function will return all the stars that the given user has added to their favorites.
+	 * 
+	 * @param theUser
+	 * @return
+	 */
+	public static Star[] getFavoriteStars(User theUser) {
+		try {
+			return db.getFavoriteStars(theUser);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * This function will add the given favorite object to the favorites table.
+	 * 
+	 * @param newFavorite Favorite object being added.
+	 */
+	public static void addFavorite(Favorite newFavorite) {
+		String query = "INSERT INTO Users VALUES (null, '"  + newFavorite.getUserID() + "', '" +
+						newFavorite.getStarID() + "', '" + newFavorite.getRating() + "', '" +
+						newFavorite.getUserComment() + "');";
+		db.performQuery(query);
+	}
+	
+	/**
 	 * This function will perform an insert query on the database and add
 	 * the new user to the database. This functions assumes that the given user
 	 * is unique.
