@@ -180,9 +180,23 @@ public class DBConnection {
 		 * @param theStar The star being loaded.
 		 * @return Object containing the comment and rating.
 		 */
-		public Favorite getFavorite(User theUser, Star theStar) {
+		public Favorite getComment(User theUser, Star theStar) throws SQLException {
 			Favorite result = new Favorite();
 			
+			String queryString;
+			Statement statement = Conn.createStatement();
+			ResultSet rset;
+			queryString = "SELECT * FROM Favorites" +
+							"WHERE userID = '" + theUser.getUserID() + 
+							"' && starID = '" + theStar.getStarID() + "';";
+			rset = statement.executeQuery(queryString);
+			while(rset.next()) {
+				result.setFavoriteID(rset.getInt("favoriteID"));
+				result.setStarID(rset.getInt("starID"));
+				result.setUserID(rset.getInt("userID"));
+				result.setUserComment(rset.getString("userComment"));
+				result.setRating(rset.getInt("rating"));
+			}
 			
 			return result;
 		}
