@@ -6,8 +6,6 @@
 package view;
 
 import java.awt.EventQueue;
-import java.util.Arrays;
-
 import model.DBAccess;
 
 public class Main {

@@ -15,14 +15,38 @@ import javax.swing.JTextPane;
 import model.DBAccess;
 import model.Star;
 
+/**
+ * Panel class only used to check for and display results of a search.
+ * @author Antonio V. Alvillar
+ */
 @SuppressWarnings("serial")
 public class ResultsPanel extends JPanel {
 	
-	JLabel myLabel;
-	Star[] myStars;
-	Star myStar;
-	JTextPane myResults = new JTextPane();
+	/**
+	 * Label to store a message if no star is found. 
+	 */
+	private JLabel myLabel;
+	
+	/**
+	 * Array of star objects used to find a particular star.
+	 */
+	private Star[] myStars;
+	
+	/**
+	 * store a particular star returned from the search.
+	 */
+	private Star myStar;
+	
+	/**
+	 * Text pane used to display information of a star that was found.
+	 */
+	private JTextPane myResults = new JTextPane();
 
+	/**
+	 * Panel that can be added to a JFrame and display information about
+	 * a particular star plus check if no star is found. 
+	 * @param A string of a star name to be searched. 
+	 */
 	public ResultsPanel(String mySearchedStar) {
 		setLayout(new GridBagLayout());
 		if (DBAccess.searchStar(mySearchedStar).length == 0) {
@@ -35,6 +59,11 @@ public class ResultsPanel extends JPanel {
 
 	}
 
+	/**
+	 * Search the database for the star then display all the information 
+	 * about the star that is needed. 
+	 * @param Star name that was found from the previous method. 
+	 */
 	private void setUpDisplay(String theStar) {
 		myResults.setEditable(false);
 		myStars = DBAccess.searchStar(theStar);
