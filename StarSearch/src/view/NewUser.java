@@ -250,15 +250,15 @@ public class NewUser extends JDialog {
 		
 		boolean result  = true;
 		
-		if (fName.isEmpty() || fName.contains("'")) {
+		if (fName.isEmpty() || fName.contains("'") || fName.length() > 24) {
 			result = false;
-		} else if (lName.isEmpty() || lName.contains("'")) {
+		} else if (lName.isEmpty() || lName.contains("'") || lName.length() > 24) {
 			result = false;
-		} else if (myPass.isEmpty() || myPass.contains("'")) {
+		} else if (myPass.isEmpty() || myPass.contains("'") || myPass.length() > 24) {
 			result = false;
-		} else if (myUser.isEmpty() || myUser.contains("'")) {
+		} else if (myUser.isEmpty() || myUser.contains("'") || myUser.length() > 24) {
 			result = false;
-		} else if (email.contains("'")) {
+		} else if (email.contains("'") || email.length() > 29) {
 			result = false;
 		}
 		
@@ -291,7 +291,7 @@ public class NewUser extends JDialog {
 						errorMessage.setVisible(true);
 					}
 				} else {
-					errorMessage.setText("No blank inputs or ' chars allowed!");
+					errorMessage.setText("No blank inputs or a field is too long!");
 					errorMessage.setVisible(true);
 				}
 			} else {
