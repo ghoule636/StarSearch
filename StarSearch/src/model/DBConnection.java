@@ -1,3 +1,8 @@
+/*
+ * TCSS 445 Database Star Search
+ * Group 20
+ */
+
 package model;
 
 import java.sql.*;

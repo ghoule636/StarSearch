@@ -1,3 +1,8 @@
+/*
+ * TCSS 445 Database Star Search
+ * Group 20
+ */
+
 package view;
 
 import java.awt.BorderLayout;
@@ -24,6 +29,10 @@ import javax.swing.JTextPane;
 import model.DBAccess;
 import model.User;
 
+/**
+ * 
+ * @author Antonio Alvillar
+ */
 public class HomePage {
 	private JFrame myFrame;
 	private JButton myHome;

@@ -1,3 +1,8 @@
+/*
+ * TCSS 445 Database Star Search
+ * Group 20
+ */
+
 package view;
 
 import java.awt.Color;
@@ -14,6 +19,8 @@ import javax.swing.event.DocumentListener;
  * Allows ghost text to appear in text boxes. Credit to StackOverflow user 
  * "Guillaume Polet" on page 
  * http://stackoverflow.com/questions/10506789/how-to-display-faint-gray-ghost-text-in-a-jtextfield
+ * And to Andy Bleich.
+ * 
  * @author Andy Bleich, Guillaume Polet
  *
  */

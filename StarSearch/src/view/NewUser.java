@@ -1,3 +1,8 @@
+/*
+ * TCSS 445 Database Star Search
+ * Group 20
+ */
+
 package view;
 
 import java.awt.BorderLayout;
@@ -19,7 +24,6 @@ import javax.swing.JTextField;
 import model.DBAccess;
 import model.User;
 
-
 /**
  * This class will display the register new user dialog box.
  * 
@@ -27,18 +31,74 @@ import model.User;
  */
 public class NewUser extends JDialog {
 	
+	/**
+	 * Generated serial number.
+	 */
+	private static final long serialVersionUID = 263629641612746637L;
+
+	/**
+	 * Stores the user input username.
+	 */
 	private String myUser = "";
+	
+	/**
+	 * Stores the user input password.
+	 */
 	private String myPass = "";
+	
+	/**
+	 * Stores the user input first name.
+	 */
 	private String fName = "";
+	
+	/**
+	 * Stores the user input last name.
+	 */
 	private String lName = "";
+	
+	/**
+	 * Stores the user input email.
+	 */
 	private String email = "";
+	
+	/**
+	 * Stores the JTextfield for first name.
+	 */
 	private JTextField nameInput;
+	
+	/**
+	 * Stores the JTextfield for last name.
+	 */
 	private JTextField lastNameInput;
+	
+	/**
+	 * Stores the JTextfield for email.
+	 */
 	private JTextField emailInput;
+	
+	/**
+	 * Stores the JTextfield for userName.
+	 */
 	private JTextField userInput;
+	
+	/**
+	 * Stores the JTextfield for password.
+	 */
 	private JTextField passInput;
+	
+	/**
+	 * Stores the list of current users retrieved from the database.
+	 */
 	private User[] myUsers;
+	
+	/**
+	 * Displays the general error message.
+	 */
 	private JLabel errorMessage;
+	
+	/**
+	 * Displays invalid email information.
+	 */
 	private JLabel invalidEmail;
 	
 	private NewUser(JFrame parent) {
@@ -142,6 +202,12 @@ public class NewUser extends JDialog {
 		});
 	}
 	
+	/**
+	 * Perform a check on the email to make sure it is actually an email.
+	 * Only checks for the '@' symbol.
+	 * 
+	 * @return True if string contains '@', false otherwise.
+	 */
 	private boolean verifyEmail() {
 		boolean result = false;
 				
@@ -151,6 +217,12 @@ public class NewUser extends JDialog {
 		return result;
 	}
 	
+	/**
+	 * Checks to see if the info the user has input is already in the database.
+	 * 
+	 * @param theUser The new user being registered.
+	 * @return True if the user is not in the system, false otherwise.
+	 */
 	private boolean verifyNewUser(User theUser) {
 		boolean result = true;
 				
@@ -166,6 +238,11 @@ public class NewUser extends JDialog {
 		return result;
 	}
 	
+	/**
+	 * Checks to make sure that all text fields are not blank.
+	 * 
+	 * @return True if there are no blanks and false otherwise.
+	 */
 	private boolean verifyBlanks() {
 		
 		boolean result  = true;
@@ -183,6 +260,11 @@ public class NewUser extends JDialog {
 		return result;
 	}
 	
+	/**
+	 * Displays the register dialog.
+	 * 
+	 * @param parent The JFrame that is creating this dialog.
+	 */
 	public static void showRegisterDialog(JFrame parent) {
 		new NewUser(parent);
 	}
@@ -193,9 +275,9 @@ public class NewUser extends JDialog {
 			User newUser = new User(fName, lName, myPass, false, email, myUser);
 			invalidEmail.setVisible(false);
 			errorMessage.setVisible(false);
-			if (verifyEmail()) {
-				if (verifyBlanks()) {
-					if (verifyNewUser(newUser)) {
+			if (verifyEmail()) { // checks if email has the @ symbol inside it.
+				if (verifyBlanks()) { // checks to make sure the other fields are not blank.
+					if (verifyNewUser(newUser)) { //checks to see if the user already exists.
 						System.out.println("added User");
 						DBAccess.registerUser(newUser);
 					} else {
