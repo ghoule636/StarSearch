@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class DBAccess {
 
-	private static String[] url = {"jdbc:mysql://10.0.0.2:3306/StarSearch", "starSearch", "42101010ag"};
+	private static String[] url = {"jdbc:mysql://98.203.178.151:3306/StarSearch", "starSearch", "42101010ag"};//or 98.203.176.1
 	
 	static DBConnection db = new DBConnection(url);
 	
